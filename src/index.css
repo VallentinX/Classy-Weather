@@ -134,18 +134,14 @@ div.content p.loader:after {
 
 div.city {
   padding: 0 10px;
+  font-size: 18px;
 }
 
 div.city h2 {
-  font-size: 18px;
+  font-size: inherit;
   text-align: center;
   display: inline;
-}
-
-div.city img {
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
+  padding-right: 10px;
 }
 
 ul.weather {
@@ -191,7 +187,7 @@ li.day p {
   }
 
   form.search button {
-    padding: 6px;
+    padding: 7px;
   }
 
   div.content {
@@ -213,10 +209,7 @@ li.day p {
   }
 
   div.city {
-    padding: 0 15px;
-  }
-
-  div.city h2 {
+    padding: 0 13px;
     font-size: 20px;
   }
 
@@ -281,8 +274,8 @@ li.day p {
     height: 75px;
   }
 
-  div.city h2 {
-    font-size: 28px;
+  div.city {
+    font-size: 30px;
   }
 
   ul.weather {

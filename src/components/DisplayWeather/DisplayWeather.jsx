@@ -1,4 +1,14 @@
+import { Twemoji } from 'react-emoji-render';
 import Day from '../Day/Day';
+
+function countryCodeToFlag(countryCode) {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map(char => 0x1f1e6 + char.charCodeAt() - 65);
+
+  return String.fromCodePoint(...codePoints);
+}
 
 const DisplayWeather = function ({ weather, areaInfo }) {
   const {
@@ -17,7 +27,7 @@ const DisplayWeather = function ({ weather, areaInfo }) {
           Weather in {city}, {country}
         </h2>
 
-        <img src={`https://flagcdn.com/24x18/${flag}.png`} alt='country flag' />
+        <Twemoji text={countryCodeToFlag(flag)} />
       </div>
 
       <ul className='weather'>
