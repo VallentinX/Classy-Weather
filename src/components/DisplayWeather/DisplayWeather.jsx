@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Twemoji } from 'react-emoji-render';
 import Day from '../Day/Day';
+import InfoDay from '../InfoDay/InfoDay';
 
 function countryCodeToFlag(countryCode) {
   const codePoints = countryCode
@@ -11,14 +13,15 @@ function countryCodeToFlag(countryCode) {
 }
 
 const DisplayWeather = function ({ weather, areaInfo }) {
-  const {
-    temperature_2m_max: max,
-    temperature_2m_min: min,
-    time: dates,
-    weathercode: codes,
-  } = weather;
-
+  const [isOpen, setIsOpen] = useState(null);
+  const [info, setInfo] = useState(null);
   const { city, flag, country } = areaInfo;
+  const { alerts, days } = weather;
+
+  const openModal = function (id, info) {
+    setIsOpen(isOpen !== id ? id : null);
+    setInfo(info);
+  };
 
   return (
     <>
@@ -31,10 +34,12 @@ const DisplayWeather = function ({ weather, areaInfo }) {
       </div>
 
       <ul className='weather'>
-        {dates.map((date, i) => (
-          <Day key={date} date={date} max={max.at(i)} min={min.at(i)} code={codes.at(i)} i={i} />
+        {days.slice(0, 7).map((day, i) => (
+          <Day key={day.datetime} alerts={alerts} day={day} onOpenModal={openModal} i={i} />
         ))}
       </ul>
+
+      {isOpen && <InfoDay info={info} setIsOpen={setIsOpen} />}
     </>
   );
 };

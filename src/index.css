@@ -8,6 +8,8 @@
   --black-color: #000;
 
   --background: linear-gradient(60deg, #4b0082, #ff4500);
+  --background-alert: linear-gradient(170deg, #000 45%, #f00);
+  scrollbar-width: none;
 }
 
 * {
@@ -80,6 +82,7 @@ div.content {
   gap: 25px;
   padding: 50px 0;
   margin: 0px 10px;
+  position: relative;
 }
 
 div.content p.error {
@@ -137,7 +140,8 @@ div.city {
   font-size: 18px;
 }
 
-div.city h2 {
+div.city h2,
+div.info h2 {
   font-size: inherit;
   text-align: center;
   display: inline;
@@ -159,16 +163,76 @@ li.day {
   background: var(--background);
   border-radius: 5px;
   padding: 5px 5px;
+  cursor: pointer;
 }
 
-li.day span {
-  font-size: 20px;
+li.alert {
+  background: var(--background-alert);
+  font-weight: 700;
 }
 
 li.day p {
   font-size: 15px;
   width: 100%;
   text-align: center;
+}
+
+div.info {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  position: absolute;
+  top: 5px;
+  background-color: #323630;
+  border: 1px solid #fff;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+div.info .closeModal {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+div.info p,
+div.info span {
+  font-size: 13px;
+}
+
+div.alertMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #f00;
+  font-weight: bold;
+}
+
+div.alertMessage p {
+  font-size: 13px;
+}
+
+div.alertMessage div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+div.alertMessage span {
+  font-size: 13px;
+  color: inherit;
 }
 
 @media screen and (min-width: 480px) {
@@ -233,6 +297,29 @@ li.day p {
   li.day p {
     font-size: 16px;
   }
+
+  div.info {
+    padding: 10px;
+    gap: 15px;
+  }
+
+  div.info .closeModal {
+    right: 10px;
+    font-size: 15px;
+  }
+
+  div.info p,
+  div.info span {
+    font-size: 15px;
+  }
+
+  div.alertMessage p {
+    font-size: 15px;
+  }
+
+  div.alertMessage span {
+    font-size: 15px;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -294,5 +381,44 @@ li.day p {
 
   li.day p {
     font-size: 22px;
+  }
+
+  /* /////////////////////////// */
+
+  div.info {
+    max-width: 700px;
+    height: 500px;
+    top: 20px;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  div.info .closeModal {
+    top: 5px;
+    right: 10px;
+    font-size: 20px;
+  }
+
+  div.info p,
+  div.info span {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  div.alertMessage {
+    gap: 20px;
+  }
+
+  div.alertMessage p {
+    font-size: 18px;
+  }
+
+  div.alertMessage div {
+    flex-direction: row;
+    gap: 100px;
+  }
+
+  div.alertMessage span {
+    font-size: 18px;
   }
 }

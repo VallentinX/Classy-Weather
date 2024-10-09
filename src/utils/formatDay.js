@@ -1,7 +1,5 @@
-function formatDay(dateStr) {
-  return new Intl.DateTimeFormat('en', {
-    weekday: 'short',
-  }).format(new Date(dateStr));
+function formatDay(date) {
+  return new Date(date).toString().slice(0, 3);
 }
 
 export default formatDay;

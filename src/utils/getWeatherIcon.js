@@ -1,19 +1,30 @@
-function getWeatherIcon(wmoCode) {
-  const icons = new Map([
-    [[0], '☀️'],
-    [[1], '🌤️'],
-    [[2], '🌥️'],
-    [[3], '☁️'],
-    [[45, 48], '🌪️'],
-    [[51, 56, 61, 66, 80], '🌦️'],
-    [[53, 55, 63, 65, 57, 67, 81, 82], '🌧️'],
-    [[71, 73, 75, 77, 85, 86], '🌨️'],
-    [[95], '🌩️'],
-    [[96, 99], '⛈️'],
-  ]);
-  const arr = [...icons.keys()].find(key => key.includes(wmoCode));
-  if (!arr) return 'NOT FOUND';
-  return icons.get(arr);
-}
+const weatherToEmoji = icon => {
+  switch (icon) {
+    case 'clear-day':
+      return '☀️'; // Sunny
+    case 'clear-night':
+      return '🌕'; // Clear night
+    case 'partly-cloudy-day':
+      return '🌤️'; // Partly cloudy day
+    case 'partly-cloudy-night':
+      return '🌥️'; // Partly cloudy night
+    case 'cloudy':
+      return '☁️'; // Cloudy
+    case 'rain':
+      return '🌧️'; // Rainy
+    case 'snow':
+      return '❄️'; // Snowy
+    case 'wind':
+      return '💨'; // Windy
+    case 'fog':
+      return '🌫️'; // Foggy
+    case 'thunderstorm':
+      return '⛈️'; // Thunderstorm
+    case 'tornado':
+      return '🌪️'; // Tornado
+    default:
+      return '❓'; // Unknown condition
+  }
+};
 
-export default getWeatherIcon;
+export default weatherToEmoji;

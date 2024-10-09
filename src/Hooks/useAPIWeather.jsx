@@ -2,70 +2,67 @@ import { useState, useEffect } from 'react';
 
 const useAPIWeather = function () {
   const [city, setCity] = useState(() => localStorage.getItem('city') || '');
-  const [isLoading, setIsLoading] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [weather, setWeather] = useState(null);
   const [areaInfo, setAreaInfo] = useState({});
 
-  useEffect(
-    function () {
-      const controller = new AbortController();
+  useEffect(() => {
+    const controller = new AbortController();
 
-      async function getWeather() {
-        setError('');
-        setIsLoading(isLoading => !isLoading);
+    async function getWeather() {
+      setError('');
+      setIsLoading(true);
 
-        try {
-          const cityResponse = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/search?name=${city}`,
-            {
-              signal: controller.signal,
-            }
-          );
+      try {
+        const cityResponse = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${city}`,
+          {
+            signal: controller.signal,
+          }
+        );
 
-          if (!cityResponse.ok) throw new Error('Something went wrong');
+        if (!cityResponse.ok) throw new Error('Something went wrong with geocoding');
 
-          const cityData = await cityResponse.json();
+        const cityData = await cityResponse.json();
 
-          if (!cityData.results) throw new Error('Location not found');
+        if (!cityData.results || cityData.results.length === 0)
+          throw new Error('Location not found');
 
-          const { latitude, longitude, timezone, name, country_code, country } =
-            cityData.results.at(0);
+        const { latitude, longitude, name, country_code, country } = cityData.results[0];
 
-          const weatherResponse = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=${timezone}&daily=weathercode,temperature_2m_max,temperature_2m_min`
-          );
+        // Fetch the 7-day weather forecast
+        const weatherResponse = await fetch(
+          `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${latitude},${longitude}?key=TV94CKKF5374E6XVEKGXF7ZHV`
+        );
 
-          if (!weatherResponse.ok) throw new Error('Something went wrong');
+        if (!weatherResponse.ok) throw new Error('Something went wrong with weather data');
 
-          const weatherData = await weatherResponse.json();
+        const weatherData = await weatherResponse.json();
 
-          if (!weatherData) throw new Error("Couldn't get the data");
+        if (!weatherData) throw new Error("Couldn't get the weather data");
 
-          setWeather(weatherData.daily);
-          setAreaInfo({ city: name, flag: country_code.toLowerCase(), country });
-        } catch (error) {
-          if (error.name !== 'AbortError') setError(error.message);
-        } finally {
-          setIsLoading(isLoading => !isLoading);
-        }
+        setWeather(weatherData);
+        setAreaInfo({ city: name, flag: country_code.toLowerCase(), country });
+      } catch (error) {
+        if (error.name !== 'AbortError') setError(error.message);
+      } finally {
+        setIsLoading(false);
       }
+    }
 
-      if (city.length < 3) {
-        setWeather(null);
-        setError('');
+    if (city.length < 3) {
+      setWeather(null);
+      setError('');
+      return;
+    }
 
-        return;
-      }
+    getWeather();
 
-      getWeather();
-
-      return function () {
-        controller.abort();
-      };
-    },
-    [city]
-  );
+    return function () {
+      controller.abort();
+    };
+  }, [city]);
 
   useEffect(() => {
     localStorage.setItem('city', city);
